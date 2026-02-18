@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>A Letter to the Love of My Life</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Special+Elite&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', serif;
+    background-color: #f5f1ea;
+}
+
+/* INTRO SCREEN */
+.intro {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #f5f1ea;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.5s ease;
+}
+
+.notification {
+    font-size: 26px;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+    color: #5a3e36;
+    letter-spacing: 1px;
+}
+
+.button {
+    background: #8b0000;
+    color: white;
+    padding: 22px 55px;
+    font-size: 22px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    animation: pulse 2s infinite;
+    transition: transform 0.3s ease;
+}
+
+.button:hover {
+    transform: scale(1.05);
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 10px #8b0000; }
+    50% { box-shadow: 0 0 30px #b22222; }
+    100% { box-shadow: 0 0 10px #8b0000; }
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* LETTER SECTION */
+.letter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("background.jpg") no-repeat center center/cover;
+    display: none;
+    padding: 140px 220px;
+    box-sizing: border-box;
+    animation: fadeLetter 2s ease forwards;
+}
+
+@keyframes fadeLetter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.typewriter {
+    font-family: 'Special Elite', cursive;
+    font-size: 24px;
+    line-height: 2;
+    color: #3b2e2e;
+    white-space: pre-wrap;
+}
+
+/* BUTTERFLIES */
+.butterfly {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #8b0000;
+    border-radius: 50%;
+    animation: fly 1.8s ease forwards;
+}
+
+@keyframes fly {
+    to {
+        transform: translateY(-400px) scale(0);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="intro" id="intro">
+    <div class="notification">
+        You received a message from Yashu
+    </div>
+    <button class="button" onclick="openLetter()">Open Your Letter</button>
+</div>
+
+<div class="letter" id="letter">
+    <div class="typewriter" id="text"></div>
+</div>
+
+<script>
+const message = `WRITE YOUR LETTER HERE
+
+(You can edit this anytime.)
+
+Love,
+Yashu`;
+
+let i = 0;
+
+function typeWriter() {
+    if (i < message.length) {
+        document.getElementById("text").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, 35);
+    }
+}
+
+function openLetter() {
+    const intro = document.getElementById("intro");
+
+    for(let j=0;j<60;j++){
+        let butterfly = document.createElement("div");
+        butterfly.classList.add("butterfly");
+        butterfly.style.left = Math.random()*window.innerWidth + "px";
+        butterfly.style.top = Math.random()*window.innerHeight + "px";
+        document.body.appendChild(butterfly);
+        setTimeout(()=>butterfly.remove(),1800);
+    }
+
+    intro.style.opacity = "0";
+
+    setTimeout(()=>{
+        intro.style.display = "none";
+        document.getElementById("letter").style.display = "block";
+        typeWriter();
+    },1500);
+}
+</script>
+
+</body>
+</html>
