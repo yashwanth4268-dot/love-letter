@@ -4,127 +4,182 @@
 <meta charset="UTF-8">
 <title>A Letter to the Love of My Life</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
 
 <style>
 body {
     margin: 0;
     overflow: hidden;
-    font-family: 'Cormorant Garamond', serif;
-    background-color: #f5f1ea;
+    background: radial-gradient(circle at center, #200000, #000000);
+    font-family: 'Special Elite', cursive;
 }
 
-/* INTRO SCREEN */
-.intro {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #f5f1ea;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 1.5s ease;
-}
-
+/* Notification */
 .notification {
-    font-size: 26px;
-    margin-bottom: 50px;
-    opacity: 0;
-    animation: fadeIn 2s forwards;
-    color: #5a3e36;
-    letter-spacing: 1px;
-}
-
-.button {
-    background: #8b0000;
+    position: fixed;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #c62828;
     color: white;
-    padding: 22px 55px;
-    font-size: 22px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    animation: pulse 2s infinite;
-    transition: transform 0.3s ease;
+    padding: 18px 35px;
+    border-radius: 14px;
+    font-size: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    animation: slideDown 1.5s forwards;
+    z-index: 5;
 }
 
-.button:hover {
-    transform: scale(1.05);
+@keyframes slideDown {
+    to { top: 40px; }
+}
+
+/* Heart Button */
+.heart-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.heart-container img {
+    width: 200px;
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 10px #8b0000; }
-    50% { box-shadow: 0 0 30px #b22222; }
-    100% { box-shadow: 0 0 10px #8b0000; }
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+    100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-@keyframes fadeIn {
-    to { opacity: 1; }
+/* Interface fly away */
+.fly-away {
+    animation: flyAway 2s forwards;
 }
 
-/* LETTER SECTION */
-.letter {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: url("background.jpg") no-repeat center center/cover;
-    display: none;
-    padding: 140px 220px;
-    box-sizing: border-box;
-    animation: fadeLetter 2s ease forwards;
-}
-
-@keyframes fadeLetter {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.typewriter {
-    font-family: 'Special Elite', cursive;
-    font-size: 24px;
-    line-height: 2;
-    color: #3b2e2e;
-    white-space: pre-wrap;
-}
-
-/* BUTTERFLIES */
-.butterfly {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background: #8b0000;
-    border-radius: 50%;
-    animation: fly 1.8s ease forwards;
-}
-
-@keyframes fly {
+@keyframes flyAway {
     to {
-        transform: translateY(-400px) scale(0);
+        transform: translateY(-150vh) scale(0.6);
         opacity: 0;
     }
+}
+
+/* Butterflies */
+.butterfly {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    clip-path: polygon(50% 0%, 60% 30%, 100% 50%, 60% 70%, 50% 100%, 40% 70%, 0% 50%, 40% 30%);
+    opacity: 1;
+}
+
+/* Paper */
+.paper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 70%;
+    max-width: 700px;
+    height: 70vh;
+    background: #d2b48c;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+    padding: 80px 70px;
+    opacity: 0;
+    transition: opacity 2s ease, transform 2s ease;
+}
+
+/* Text Area */
+.typewriter {
+    font-size: 22px;
+    line-height: 1.8;
+    color: #000000;
+    white-space: pre-wrap;
 }
 </style>
 </head>
 
-<body>
+<body ondblclick="openLetter()">
 
-<div class="intro" id="intro">
+<div id="interface">
+
     <div class="notification">
-        You received a message from Yashu
+        💌 You received a Letter from Yashu<br>
+        (Double click to open)
     </div>
-    <button class="button" onclick="openLetter()">Open Your Letter</button>
+
+    <div class="heart-container">
+        <img src="heart.png">
+    </div>
+
 </div>
 
-<div class="letter" id="letter">
+<div id="paper" class="paper">
     <div class="typewriter" id="text"></div>
 </div>
 
 <script>
-const message = `WRITE YOUR LETTER HERE
+function openLetter() {
 
-(You can edit this anytime.)
+    // Make entire interface fly away
+    document.getElementById("interface").classList.add("fly-away");
 
-Love,
+    // Create LOTS of butterflies
+    for (let i = 0; i < 80; i++) {
+        let b = document.createElement("div");
+        b.className = "butterfly";
+        document.body.appendChild(b);
+
+        let startX = Math.random() * window.innerWidth;
+        let startY = Math.random() * window.innerHeight;
+
+        b.style.left = startX + "px";
+        b.style.top = startY + "px";
+
+        let randomX = (Math.random() - 0.5) * 800;
+        let randomY = -Math.random() * 1000;
+
+        b.animate([
+            { transform: "translate(0px,0px)", opacity: 1 },
+            { transform: `translate(${randomX}px, ${randomY}px)`, opacity: 0 }
+        ], {
+            duration: 3000 + Math.random() * 2000,
+            easing: "ease-out"
+        });
+
+        setTimeout(() => b.remove(), 5000);
+    }
+
+    // Show paper after delay
+    setTimeout(() => {
+        let paper = document.getElementById("paper");
+        paper.style.opacity = 1;
+        paper.style.transform = "translate(-50%, -50%) scale(1)";
+        typeWriter();
+    }, 2000);
+}
+
+
+/* ===========================
+   EDIT YOUR LETTER HERE
+   =========================== */
+
+const message = `My love,
+
+This is where your words will appear.
+
+You can adjust:
+- Top spacing
+- Line breaks
+- Paragraph positions
+
+Exactly how you want it.
+
+Forever yours,
 Yashu`;
 
 let i = 0;
@@ -135,27 +190,6 @@ function typeWriter() {
         i++;
         setTimeout(typeWriter, 35);
     }
-}
-
-function openLetter() {
-    const intro = document.getElementById("intro");
-
-    for(let j=0;j<60;j++){
-        let butterfly = document.createElement("div");
-        butterfly.classList.add("butterfly");
-        butterfly.style.left = Math.random()*window.innerWidth + "px";
-        butterfly.style.top = Math.random()*window.innerHeight + "px";
-        document.body.appendChild(butterfly);
-        setTimeout(()=>butterfly.remove(),1800);
-    }
-
-    intro.style.opacity = "0";
-
-    setTimeout(()=>{
-        intro.style.display = "none";
-        document.getElementById("letter").style.display = "block";
-        typeWriter();
-    },1500);
 }
 </script>
 
